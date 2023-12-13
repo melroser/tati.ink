@@ -1,0 +1,35 @@
+<nav>
+  <div class="navArtist">
+    <a href="/">{{ site.Title }}</a>
+  </div>
+  <div class="links">
+    {{- $index := 0 -}}
+    {{- $menus := .Site.Menus.main -}}
+    {{- $len := len $menus }}
+    {{- range $menus -}}
+      {{- $url := .URL | relURL -}}
+      {{- if eq (add $index 1) $len -}}
+        <a href="{{- .URL | relURL -}}" class="link">{{- .Title -}}</a>
+      {{- else -}}
+        <a href="{{- .URL | relURL -}}" class="link">{{- .Title -}}</a>,&nbsp
+      {{- end -}}
+      {{- $index = add $index 1 -}}
+    {{- end -}}
+  </div>
+  <div class="threshold">
+    <span>{{- i18n "threshold" | strings.FirstUpper -}}:</span>
+    <span>
+      <button class="dec">&#xFF0D;</button>
+      <span class="num"></span><span class="num"></span><span class="num"></span
+      ><span class="num"></span>
+      <button class="inc">&#xFF0B;</button>
+    </span>
+  </div>
+  <div class="index">
+    <span class="num"></span><span class="num"></span><span class="num"></span
+    ><span class="num"></span>
+    <span>/</span>
+    <span class="num"></span><span class="num"></span><span class="num"></span
+    ><span class="num"></span>
+  </div>
+</nav>

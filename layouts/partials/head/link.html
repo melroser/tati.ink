@@ -1,0 +1,61 @@
+{{/* fingerprint */}}
+{{- $fingerprint := .Scratch.Get "fingerprint" | default "" -}}
+
+{{/* critical style */}}
+{{- $style := dict "Source" "scss/critical.scss" "Fingerprint" $fingerprint -}}
+{{- $options := dict "enableSourceMap" true "includePaths" (slice "node_modules") -}}
+{{- $style = dict "Context" . "ToCSS" $options "Inline" true | merge $style -}}
+{{- partial "plugin/style.html" $style -}}
+
+{{/* main style */}}
+{{- if site.Params.bundled -}}
+  {{- $style := dict "Link" "/bundled/css/style.min.css" "Defer" true -}}
+  {{- partial "plugin/style.html" $style -}}
+{{- else -}}
+  {{- $style := dict "Source" "scss/style.scss" "Fingerprint" $fingerprint -}}
+  {{- $options := dict "targetPath" "css/style.css" "enableSourceMap" true "includePaths" (slice "node_modules") -}}
+  {{- $style = dict "Context" . "ToCSS" $options "Minify" hugo.IsProduction "Defer" true | merge $style -}}
+  {{- partial "plugin/style.html" $style -}}
+{{- end -}}
+
+{{/* main js */}}
+{{- $script := dict "Link" "/bundled/js/main.js" "Defer" true "Esm" true -}}
+{{- partial "plugin/script.html" $script -}}
+
+{{/* fonts */}}
+<link rel="preload" href="/lib/fonts/fw.woff2" as="font" crossorigin />
+{{- if (partial "function/langCode.html" (slice "en" "de" "fr" "es" "it")) -}}
+  <link rel="preload" href="/lib/fonts/GeistVF.woff2" as="font" crossorigin />
+{{- else if (partial "function/langCode.html" (slice "zh-cn" "zh-sg")) -}}
+  <link rel="preload" href="/lib/fonts/NotoSans-Regular.woff2" as="font" crossorigin />
+  <link
+    rel="preload"
+    href="/lib/fonts/NotoSansCJKsc-Regular.woff2"
+    as="font"
+    crossorigin
+  />
+{{- else if (partial "function/langCode.html" (slice "zh-tw" "zh-hk" "zh-mo")) -}}
+  <link rel="preload" href="/lib/fonts/NotoSans-Regular.woff2" as="font" crossorigin />
+  <link
+    rel="preload"
+    href="/lib/fonts/NotoSansCJKtc-Regular.woff2"
+    as="font"
+    crossorigin
+  />
+{{- else if (partial "function/langCode.html" (slice "ja")) -}}
+  <link rel="preload" href="/lib/fonts/NotoSans-Regular.woff2" as="font" crossorigin />
+  <link
+    rel="preload"
+    href="/lib/fonts/NotoSansCJKjp-Regular.woff2"
+    as="font"
+    crossorigin
+  />
+{{- else if (partial "function/langCode.html" (slice "ko")) -}}
+  <link rel="preload" href="/lib/fonts/NotoSans-Regular.woff2" as="font" crossorigin />
+  <link
+    rel="preload"
+    href="/lib/fonts/NotoSansCJKkr-Regular.woff2"
+    as="font"
+    crossorigin
+  />
+{{- end -}}

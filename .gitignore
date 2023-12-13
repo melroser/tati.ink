@@ -1,0 +1,13 @@
+.DS_Store
+
+
+themes/
+public/
+resources/
+content/**/*.PNG
+content/**/*.jpg
+
+
+**/*.jpeg
+**/*.HEIC
+.hugo_build.lock

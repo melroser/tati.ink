@@ -1,0 +1,37 @@
+{{- $Page := . -}}
+{{- $Path := "" -}}
+{{- $params := .Page.Params | merge .Site.Params.Page -}}
+
+{{- with partial "function/currentMenuItem.html" . -}}
+  {{- $Path = .DirName -}}
+{{- end -}}
+
+{{- $gallery := site.GetPage $Path -}}
+{{- with $gallery.Resources.ByType "image" -}}
+  {{- $index := len . -}}
+  {{- $Page.Scratch.Add "img" slice -}}
+  {{- range sort . "Name" "desc" -}}
+    {{- $image := . -}}
+    {{- $index = sub $index 1 -}}
+    {{- $alt := .Name -}}
+    {{- with $params.unifiedAlt -}}
+      {{- $alt = . -}}
+    {{- end -}}
+    {{- $lores := .Resize (site.Params.loResOpt | default "700x webp Lanczos q60") -}}
+    {{- $hires := .Resize (site.Params.hiResOpt | default "2000x webp Lanczos q75") -}}
+    {{- $Page.Scratch.Add "img" (dict
+      "index" (int $index)
+      "alt" (string $alt)
+      "loUrl" (string $lores.RelPermalink)
+      "loImgH" (int $lores.Height)
+      "loImgW" (int $lores.Width)
+      "hiUrl" (string $hires.RelPermalink)
+      "hiImgH" (int $hires.Height)
+      "hiImgW" (int $hires.Width)
+      )
+    -}}
+  {{- end -}}
+    {{ $Page.Scratch.Get "img" | jsonify }}
+{{- else -}}
+[]
+{{- end -}}
