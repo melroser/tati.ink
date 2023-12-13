@@ -22,6 +22,6 @@ defaultContentLanguage = 'en'
 
 # theme as module
 [module]
-# replacements = "github.com/Sped0n/bridget -> ../.." # deploy with local dir  WARN: delete this line if you want to deploy with git
 [[module.imports]]
-path = "bridget" # deploy with git (recommended)  WARN: you should also set `bundled` to true in params.toml !!!
+# replacements = "github.com/Sped0n/bridget -> ../.." # deploy with local dir  WARN: delete this line if you want to deploy with git
+path = "github.com/Sped0n/bridget" # deploy with git (recommended)  WARN: you should also set `bundled` to true in params.toml !!!
